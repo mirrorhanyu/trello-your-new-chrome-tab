@@ -12,6 +12,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-dev": "react-scripts build && cp -R ./build/{index.html,static} ../publish && rm -rf build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
