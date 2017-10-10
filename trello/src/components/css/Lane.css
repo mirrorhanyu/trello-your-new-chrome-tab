@@ -1,0 +1,12 @@
+.lane {
+    width: 270px;
+    margin: 5px;
+    background-color: #E2E4E6;
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.lane-cards {
+    padding: 4px;
+}
