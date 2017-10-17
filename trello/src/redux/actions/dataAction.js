@@ -3,6 +3,16 @@ const actions = {
     return {
       type: "INIT_TRELLO_BOARD"
     };
+  },
+  addCard: (laneId, card) => {
+    const payload = {
+      laneId,
+      card
+    };
+    return {
+      type: "ADD_CARD",
+      payload
+    }
   }
 };
 
