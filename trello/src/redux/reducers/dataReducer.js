@@ -1,7 +1,7 @@
 import {get, set} from "../../services/localStorage";
 import {settings} from "../../settings";
 
-const defaultLanes = [{cards: [], title: "Trello"}];
+const defaultLanes = [];
 
 const fetchLanes = () => {
   const lanesInlocalStorage = get(settings.LOCAL_STORAGE_KEY);
@@ -13,12 +13,12 @@ const storeLanes = (lanes) => {
 };
 
 function dataReducer(state = {
-  lanes: [{cards: [], title: ""}]
+  lanes: []
 }, action) {
-  const lanes = fetchLanes();
   switch (action.type) {
     case "INIT_TRELLO_BOARD" :
     {
+      const lanes = fetchLanes();
       storeLanes(lanes);
       return {...state, lanes};
     }
@@ -27,7 +27,16 @@ function dataReducer(state = {
       const payload = action.payload;
       const id = payload.laneId;
       const content = payload.card;
+      const lanes = state.lanes.slice();
       lanes[id].cards.push({content});
+      storeLanes(lanes);
+      return {...state, lanes};
+    }
+    case "ADD_LANE": {
+      const payload = action.payload;
+      const lane = payload.lane;
+      const lanes = state.lanes.slice();
+      lanes.push({cards: [], title: lane});
       storeLanes(lanes);
       return {...state, lanes};
     }

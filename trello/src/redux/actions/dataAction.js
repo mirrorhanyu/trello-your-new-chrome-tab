@@ -13,6 +13,15 @@ const actions = {
       type: "ADD_CARD",
       payload
     }
+  },
+  addLane: (lane) => {
+    const payload = {
+      lane
+    };
+    return {
+      type:"ADD_LANE",
+      payload
+    }
   }
 };
 

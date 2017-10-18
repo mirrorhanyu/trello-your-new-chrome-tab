@@ -1,16 +1,52 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Lane from "./Lane";
+import actions from '../redux/actions/dataAction';
 import './css/BoardContainer.css';
 
 class BoardContainer extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {isMouthOpen: false};
+    this.noise = "";
+  }
+
+  makeNoise(event) {
+    this.setState({noise: event.target.value});
+  }
+
+  shutUp() {
+    this.setState({isMouthOpen: false});
+  }
+
+  speak() {
+    this.setState({isMouthOpen: true});
+  }
+
+  addLane() {
+    this.props.addLane(this.state.noise);
+  }
   
   render() {
     const lanesQuantity = this.props.lanesQuantity;
     const lanes = Array.from({length: lanesQuantity}, (value, index) => (<Lane key={index} id={index}/>));
+    
+    const laneGenerator = this.state.isMouthOpen ? (
+      <div className="lane-generator-content">
+        <input type="text" placeholder="Add a lane..." value={this.state.noise} onChange={this.makeNoise.bind(this)}/>
+        <input type="button" value="Save" onClick={this.addLane.bind(this)}/>
+      </div>
+    ) : (
+      <div className="lane-generator">
+        <p onClick={this.speak.bind(this)}>Add a lane...</p>
+      </div>
+    );
+    
     return (
       <div className="board-wrapper">
         {lanes}
+        {laneGenerator}
       </div>
     );
   }
@@ -23,7 +59,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    addLane: (lane) => dispatch(actions.addLane(lane))
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer);
