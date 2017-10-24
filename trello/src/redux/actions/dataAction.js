@@ -19,7 +19,30 @@ const actions = {
       lane
     };
     return {
-      type:"ADD_LANE",
+      type: "ADD_LANE",
+      payload
+    }
+  },
+  updateCards: (laneId, dragIndex, hoverIndex) => {
+    const payload = {
+      laneId,
+      dragIndex,
+      hoverIndex
+    };
+    return {
+      type: "UPDATE_CARDS",
+      payload
+    }
+  },
+  moveCard: (fromLaneId, toLaneId, fromCardIndex, toCardIndex) => {
+    const payload = {
+      fromLaneId,
+      toLaneId,
+      fromCardIndex,
+      toCardIndex
+    };
+    return {
+      type: "MOVE_CARD",
       payload
     }
   }

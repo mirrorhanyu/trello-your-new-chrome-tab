@@ -4,6 +4,9 @@ import Lane from "./Lane";
 import actions from '../redux/actions/dataAction';
 import './css/BoardContainer.css';
 
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
+
 class BoardContainer extends Component {
 
   constructor(props) {
@@ -64,4 +67,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(BoardContainer));

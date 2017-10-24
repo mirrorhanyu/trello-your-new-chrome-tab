@@ -1,14 +1,18 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
+import {findDOMNode} from 'react-dom';
 import actions from '../redux/actions/dataAction';
 import Card from "./Card";
 import './css/Lane.css';
+
+import { DropTarget } from 'react-dnd';
+import { DROP_TYPE } from "../contants/Type";
 
 class Lane extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {isMouthOpen: false};
+    this.state = {isMouthOpen: false, placeholderIndex: -1};
     this.noise = "";
   }
 
@@ -28,7 +32,15 @@ class Lane extends Component {
     this.props.addCard(laneId, this.state.noise);
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (!nextProps.isOver) {
+      this.setState({placeholderIndex: -1})
+    }
+  }
+
   render() {
+    const { connectDropTarget } = this.props;
+    
     const isMouthOpen = this.state.isMouthOpen;
     
     const laneId = this.props.laneId;
@@ -36,7 +48,7 @@ class Lane extends Component {
     const title = this.props.lanes[laneId].title;
 
     const cards = this.props.lanes[laneId].cards.map((card, index) => (
-      <Card key={index} data={card}/>
+      <Card key={index} index={index} data={card} laneId={laneId}/>
     ));
     
     const laneFooter = isMouthOpen ? (
@@ -50,18 +62,69 @@ class Lane extends Component {
       </div>
     );
 
-    return (
+    if(this.state.placeholderIndex > -1){
+      cards.splice(this.state.placeholderIndex, 0, (<div key="placeholder" className="placeholder"></div>));
+    }
+
+    return connectDropTarget(
       <div className="lane">
         <div className="lane-title">
           {title}
         </div>
-        <div className="lane-cards">
+        <div className="lane-cards" ref="cards">
           {cards}
         </div>
         {laneFooter}
       </div>
     );
   }
+}
+
+const cardTarget = {
+  hover(props, monitor, component) {
+    const item = monitor.getItem();
+    const cardLaneId = item.laneId;
+    const laneId = props.laneId;
+    if(cardLaneId === laneId){
+      return
+    }
+
+    const clientOffset = monitor.getClientOffset();
+    
+    const cards = component.refs.cards.getElementsByClassName("card");
+
+    const hoverCardIndex = Array.prototype.findIndex.call(cards, (card) => {
+      const cardBoundingRect = card.getBoundingClientRect();
+      return cardBoundingRect.top + cardBoundingRect.height / 2 >= clientOffset.y;
+    });
+    
+    const placeholderIndex = (hoverCardIndex === -1) ? cards.length : hoverCardIndex;
+
+    component.setState({placeholderIndex});
+  },
+
+  drop(props, monitor, component){
+    const item = monitor.getItem();
+    const cardLaneId = item.laneId;
+    const laneId = props.laneId;
+    if(cardLaneId === laneId){
+      return
+    }
+    const fromLaneId = item.laneId;
+    const toLaneId = props.laneId;
+    const fromCardIndex = item.cardIndex;
+    const toCardIndex = component.state.placeholderIndex;
+    props.moveCard(fromLaneId, toLaneId, fromCardIndex, toCardIndex);
+    const placeholderIndex = -1;
+    component.setState({placeholderIndex});
+  }
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
+  };
 }
 
 function mapStateToProps(state, ownProps) {
@@ -73,8 +136,9 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addCard: (laneId, card) => dispatch(actions.addCard(laneId, card))
+    addCard: (laneId, card) => dispatch(actions.addCard(laneId, card)),
+    moveCard: (fromLaneId, toLaneId, fromCardIndex, toCardIndex) => dispatch(actions.moveCard(fromLaneId, toLaneId, fromCardIndex, toCardIndex))
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Lane);
+export default connect(mapStateToProps, mapDispatchToProps)(DropTarget(DROP_TYPE, cardTarget, collect)(Lane));

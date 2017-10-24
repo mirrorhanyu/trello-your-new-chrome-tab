@@ -12,6 +12,17 @@ const storeLanes = (lanes) => {
   set(settings.LOCAL_STORAGE_KEY, JSON.stringify(lanes));
 };
 
+const update = (cards, dragIndex, dropIndex) => {
+  let card = cards[dragIndex];
+  cards.splice(dragIndex, 1);
+  cards.splice(dropIndex, 0, card);
+};
+
+const move = (lanes, fromLaneId, toLaneId, fromCardIndex, toCardIndex) => {
+  const movedCards = lanes[fromLaneId].cards.splice(fromCardIndex, 1);
+  lanes[toLaneId].cards.splice(toCardIndex, 0, movedCards[0]);
+};
+
 function dataReducer(state = {
   lanes: []
 }, action) {
@@ -39,6 +50,27 @@ function dataReducer(state = {
       lanes.push({cards: [], title: lane});
       storeLanes(lanes);
       return {...state, lanes};
+    }
+    case "UPDATE_CARDS": {
+      const payload = action.payload;
+      const laneId = payload.laneId;
+      const dragIndex = payload.dragIndex;
+      const hoverIndex = payload.hoverIndex;
+      let lanes = state.lanes.slice();
+      update(lanes[laneId].cards, dragIndex, hoverIndex);
+      storeLanes(lanes);
+      return {...state, lanes}
+    }
+    case "MOVE_CARD": {
+      const payload = action.payload;
+      const fromLaneId = payload.fromLaneId;
+      const toLaneId = payload.toLaneId;
+      const fromCardIndex = payload.fromCardIndex;
+      const toCardIndex = payload.toCardIndex;
+      let lanes = state.lanes.slice();
+      move(lanes, fromLaneId, toLaneId, fromCardIndex, toCardIndex);
+      storeLanes(lanes);
+      return {...state, lanes}
     }
     default:
       return state;

@@ -5,5 +5,10 @@
     cursor: pointer;
     margin-bottom: 6px;
     max-width: 300px;
-    min-height: 20px;
+    min-height: 50px;
+}
+
+.dragging {
+    opacity: 0;
+    background-color: #c4c9cc;
 }
