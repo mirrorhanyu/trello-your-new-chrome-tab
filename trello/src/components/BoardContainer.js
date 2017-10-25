@@ -37,12 +37,13 @@ class BoardContainer extends Component {
     
     const laneGenerator = this.state.isMouthOpen ? (
       <div className="lane-generator-content">
-        <input type="text" placeholder="Add a lane..." value={this.state.noise} onChange={this.makeNoise.bind(this)}/>
+        <input className="lane-name-getter" type="text" placeholder="Add a lane..." value={this.state.noise} onChange={this.makeNoise.bind(this)}/>
         <input type="button" value="Save" onClick={this.addLane.bind(this)}/>
+        <i className="input-cancel" onClick={this.shutUp.bind(this)}>&times;</i>
       </div>
     ) : (
       <div className="lane-generator">
-        <p onClick={this.speak.bind(this)}>Add a lane...</p>
+        <span onClick={this.speak.bind(this)}>Add a lane...</span>
       </div>
     );
     

@@ -1,5 +1,27 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #4bbf6b;
+    font: 14px "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+input {
+    color: #333;
+    line-height: 18px;
+    font-weight: 400;
+    font: 14px "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+.input-cancel {
+    display: inline-block;
+    font-style: normal;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+    color: #999;
+    height: 2pc;
+    font-size: 30px;
+    line-height: 33px;
+    width: 32px;
+    cursor: pointer;
 }

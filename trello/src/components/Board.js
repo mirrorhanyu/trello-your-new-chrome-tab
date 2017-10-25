@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import logo from '../images/logo.svg';
-import './css/Board.css';
 import actions from '../redux/actions/dataAction';
 import { connect } from "react-redux";
 import BoardContainer from "./BoardContainer";
+import './css/Board.css';
 
 class Board extends Component {
 
@@ -15,9 +14,8 @@ class Board extends Component {
   render() {
     return (
       <div className="board">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React1111</h2>
+        <div className="board-header">
+          <span>Trello your Chrome new tab</span>
         </div>
         <div className="board-container">
           <BoardContainer />

@@ -1,4 +1,52 @@
 .lane-generator, .lane-generator-content{
     display: inline-block;
     vertical-align: top;
+    padding: 4px;
+    width: 262px;
+    margin: 5px;
+    border-radius: 3px;
+}
+
+.lane-generator {
+    background: rgba(0,0,0,.12);
+    cursor: pointer;
+    color: #fff;
+    height: 32px;
+}
+
+.lane-generator-content {
+    background-color: #E2E4E6;
+}
+
+.lane-generator-content input:nth-child(1) {
+    display: block;
+    padding: 7px;
+    border-radius: 3px;
+    border: 1px solid #aaa;
+    margin: 0;
+    outline: none;
+    background: rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 8px rgba(0,0,0,.15);
+    background-clip: border-box;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.lane-generator-content input:nth-child(2) {
+    background: #5AAC44;
+    box-shadow: 0 1px 0 #519839;
+    color: #fff;
+    float: left;
+    height: 30px;
+    margin-top: 4px;
+    padding: 4px 16px;
+    border: none;
+    border-radius: 3px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.lane-generator span {
+    line-height: 32px;
+    padding: 7px;
 }
