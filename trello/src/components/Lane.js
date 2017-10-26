@@ -53,13 +53,12 @@ class Lane extends Component {
     
     const laneFooter = isMouthOpen ? (
       <div className="lane-input">
-        <textarea value={this.state.noise} onChange={this.makeNoise.bind(this)}/>
-        <input type="button" value="Add" onClick={this.addCard.bind(this, laneId)} />
+        <textarea className="lane-input-content" value={this.state.noise} onChange={this.makeNoise.bind(this)}/>
+        <input className="input-saver" type="button" value="Add" onClick={this.addCard.bind(this, laneId)} />
+        <i className="input-cancel" onClick={this.shutUp.bind(this)}>&times;</i>
       </div>
     ) : (
-      <div className="lane-add-card">
-        <p onClick={this.speak.bind(this)}>Add a card...</p>
-      </div>
+      <a className="lane-add-card" onClick={this.speak.bind(this)} href="#">Add a card...</a>
     );
 
     if(this.state.placeholderIndex > -1){
@@ -69,7 +68,7 @@ class Lane extends Component {
     return connectDropTarget(
       <div className="lane">
         <div className="lane-title">
-          {title}
+          <textarea className="lane-title-content">{title}</textarea>
         </div>
         <div className="lane-cards" ref="cards">
           {cards}

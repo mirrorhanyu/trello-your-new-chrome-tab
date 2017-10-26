@@ -5,7 +5,8 @@
     cursor: pointer;
     margin-bottom: 6px;
     max-width: 300px;
-    min-height: 50px;
+    min-height: 24px;
+    padding: 6px 6px 2px 8px;
 }
 
 .dragging {

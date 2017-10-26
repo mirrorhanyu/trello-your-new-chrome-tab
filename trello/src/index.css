@@ -25,3 +25,17 @@ input {
     width: 32px;
     cursor: pointer;
 }
+
+.input-saver {
+    background: #5AAC44;
+    box-shadow: 0 1px 0 #519839;
+    color: #fff;
+    float: left;
+    height: 30px;
+    margin-top: 4px;
+    padding: 4px 16px;
+    border: none;
+    border-radius: 3px;
+    font-weight: bold;
+    cursor: pointer;
+}
