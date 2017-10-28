@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import actions from '../redux/actions/dataAction';
 import { connect } from "react-redux";
 import BoardContainer from "./BoardContainer";
+import Header from "./Header";
 import './css/Board.css';
 
 class Board extends Component {
@@ -15,7 +16,7 @@ class Board extends Component {
     return (
       <div className="board">
         <div className="board-header">
-          <span>Trello your Chrome new tab</span>
+          <Header />
         </div>
         <div className="board-container">
           <BoardContainer />
