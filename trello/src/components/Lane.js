@@ -12,7 +12,7 @@ class Lane extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {isMouthOpen: false, placeholderIndex: -1};
+    this.state = {isMouthOpen: false, placeholderIndex: -1, placeholderHeight: 0};
     this.noise = "";
   }
 
@@ -62,7 +62,11 @@ class Lane extends Component {
     );
 
     if(this.state.placeholderIndex > -1){
-      cards.splice(this.state.placeholderIndex, 0, (<div key="placeholder" className="placeholder"></div>));
+      const placeholderHeight = this.state.placeholderHeight;
+      const placeholderStyle = {
+        height: placeholderHeight
+      };
+      cards.splice(this.state.placeholderIndex, 0, (<div key="placeholder" className="placeholder" style={placeholderStyle}></div>));
     }
 
     return connectDropTarget(
@@ -82,6 +86,7 @@ class Lane extends Component {
 const cardTarget = {
   hover(props, monitor, component) {
     const item = monitor.getItem();
+    const placeholderHeight = item.cardHeight;
     const cardLaneId = item.laneId;
     const laneId = props.laneId;
     if(cardLaneId === laneId){
@@ -99,7 +104,7 @@ const cardTarget = {
     
     const placeholderIndex = (hoverCardIndex === -1) ? cards.length : hoverCardIndex;
 
-    component.setState({placeholderIndex});
+    component.setState({placeholderIndex, placeholderHeight});
   },
 
   drop(props, monitor, component){

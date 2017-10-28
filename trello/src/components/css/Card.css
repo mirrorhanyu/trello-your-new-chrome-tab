@@ -9,7 +9,10 @@
     padding: 6px 6px 2px 8px;
 }
 
-.dragging {
-    opacity: 0;
+.card.dragging {
     background-color: #c4c9cc;
+}
+
+.card-content.dragging {
+    opacity: 0;
 }

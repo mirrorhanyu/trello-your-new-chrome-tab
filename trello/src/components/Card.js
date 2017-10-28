@@ -8,7 +8,6 @@ import {flow} from "lodash";
 import {DragSource, DropTarget} from 'react-dnd';
 import {DRAG_TYPE, DROP_TYPE} from "../contants/Type";
 
-
 class Card extends Component {
 
   render() {
@@ -17,11 +16,14 @@ class Card extends Component {
     const {isDragging, connectDragSource, connectDropTarget} = this.props;
     
     const cardClassName = isDragging ? "card dragging" : "card";
+    const cardContentClassName = isDragging ? "card-content dragging" : "card-content";
 
     return connectDragSource(
       connectDropTarget(
         <div className={cardClassName}>
-          {cardData.content}
+          <div className={cardContentClassName}>
+            {cardData.content}
+          </div>
         </div>
       )
     );
@@ -74,11 +76,13 @@ const cardTarget = {
 
 const cardSource = {
   beginDrag(props, monitor, component) {
+    const cardHeight = findDOMNode(component).getBoundingClientRect().height;
     return {
       dragType: DRAG_TYPE,
       laneId: props.laneId,
       cardIndex: props.cardIndex,
-      cardData: props.cardData
+      cardData: props.cardData,
+      cardHeight: cardHeight
     }
   },
 
