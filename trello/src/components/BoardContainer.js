@@ -29,6 +29,7 @@ class BoardContainer extends Component {
 
   addLane() {
     this.props.addLane(this.state.noise);
+    this.setState({noise: ""});
   }
   
   render() {
@@ -37,14 +38,14 @@ class BoardContainer extends Component {
     
     const laneGenerator = this.state.isMouthOpen ? (
       <div className="lane-generator-content">
-        <input className="lane-name-getter" type="text" placeholder="Add a lane..." value={this.state.noise} onChange={this.makeNoise.bind(this)}/>
+        <input autoFocus={true} className="lane-name-getter" type="text" placeholder="Add a lane..." value={this.state.noise} onChange={this.makeNoise.bind(this)}/>
         <input className="input-saver" type="button" value="Save" onClick={this.addLane.bind(this)}/>
         <i className="input-cancel" onClick={this.shutUp.bind(this)}>&times;</i>
       </div>
     ) : (
-      <div className="lane-generator">
+      <a className="lane-generator">
         <span onClick={this.speak.bind(this)}>Add a lane...</span>
-      </div>
+      </a>
     );
     
     return (

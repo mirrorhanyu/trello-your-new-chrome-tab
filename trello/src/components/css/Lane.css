@@ -67,6 +67,7 @@
     box-sizing: border-box;
     overflow: hidden;
     resize: none;
+    font-size: 14px;
     background-color: #fff;
     border: none;
     border-radius: 3px;

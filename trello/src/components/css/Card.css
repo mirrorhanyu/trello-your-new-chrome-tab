@@ -5,8 +5,12 @@
     cursor: pointer;
     margin-bottom: 6px;
     max-width: 300px;
-    min-height: 24px;
-    padding: 6px 6px 2px 8px;
+    min-height: 16px;
+    padding: 8px 6px;
+}
+
+.card-content {
+    word-wrap: break-word;
 }
 
 .card.dragging {

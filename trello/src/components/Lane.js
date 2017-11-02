@@ -30,6 +30,7 @@ class Lane extends Component {
   
   addCard(laneId) {
     this.props.addCard(laneId, this.state.noise);
+    this.setState({noise: ""});
   }
 
   componentWillReceiveProps (nextProps) {
@@ -58,7 +59,7 @@ class Lane extends Component {
         <i className="input-cancel" onClick={this.shutUp.bind(this)}>&times;</i>
       </div>
     ) : (
-      <a className="lane-add-card" onClick={this.speak.bind(this)} href="#">Add a card...</a>
+      <a className="lane-add-card" onClick={this.speak.bind(this)}>Add a card...</a>
     );
 
     if(this.state.placeholderIndex > -1){
