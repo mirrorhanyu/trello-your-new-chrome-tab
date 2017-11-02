@@ -73,7 +73,7 @@ class Lane extends Component {
     return connectDropTarget(
       <div className="lane">
         <div className="lane-title">
-          <textarea className="lane-title-content">{title}</textarea>
+          <div contentEditable={true} suppressContentEditableWarning={true} className="lane-title-content">{title}</div>
         </div>
         <div className="lane-cards" ref="cards">
           {cards}

@@ -15,7 +15,7 @@
 .lane-title-content {
     overflow: hidden;
     line-height: 1.4em;
-    height: 24px;
+    padding: 1px;
     resize: none;
     background: 0 0;
     border: 1px solid transparent;
