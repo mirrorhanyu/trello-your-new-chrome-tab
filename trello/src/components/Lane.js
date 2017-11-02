@@ -33,6 +33,10 @@ class Lane extends Component {
     this.setState({noise: ""});
   }
 
+  renameLane(laneId){
+    this.props.renameLane(laneId, this.refs.title.textContent);
+  }
+
   componentWillReceiveProps (nextProps) {
     if (!nextProps.isOver) {
       this.setState({placeholderIndex: -1})
@@ -51,7 +55,11 @@ class Lane extends Component {
     const cards = this.props.lanes[laneId].cards.map((card, index) => (
       <Card key={index} index={index} data={card} laneId={laneId}/>
     ));
-    
+
+    const laneTitle = (
+      <div ref="title" contentEditable={true} onBlur={this.renameLane.bind(this, laneId)} suppressContentEditableWarning={true} className="lane-title-content">{title}</div>
+    );
+
     const laneFooter = isMouthOpen ? (
       <div className="lane-input">
         <textarea className="lane-input-content" value={this.state.noise} onChange={this.makeNoise.bind(this)}/>
@@ -73,7 +81,7 @@ class Lane extends Component {
     return connectDropTarget(
       <div className="lane">
         <div className="lane-title">
-          <div contentEditable={true} suppressContentEditableWarning={true} className="lane-title-content">{title}</div>
+          {laneTitle}
         </div>
         <div className="lane-cards" ref="cards">
           {cards}
@@ -142,7 +150,8 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     addCard: (laneId, card) => dispatch(actions.addCard(laneId, card)),
-    moveCard: (fromLaneId, toLaneId, fromCardIndex, toCardIndex) => dispatch(actions.moveCard(fromLaneId, toLaneId, fromCardIndex, toCardIndex))
+    moveCard: (fromLaneId, toLaneId, fromCardIndex, toCardIndex) => dispatch(actions.moveCard(fromLaneId, toLaneId, fromCardIndex, toCardIndex)),
+    renameLane: (laneId, title) => dispatch(actions.renameLane(laneId, title))
   };
 }
 

@@ -72,6 +72,15 @@ function dataReducer(state = {
       storeLanes(lanes);
       return {...state, lanes}
     }
+    case "RENAME_LANE": {
+      const payload = action.payload;
+      const laneId = payload.laneId; 
+      const title = payload.title;
+      let lanes = state.lanes.slice();
+      lanes[laneId].title = title;
+      storeLanes(lanes);
+      return {...state, lanes};
+    }
     default:
       return state;
   }

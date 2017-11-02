@@ -45,6 +45,16 @@ const actions = {
       type: "MOVE_CARD",
       payload
     }
+  },
+  renameLane: (laneId, title) => {
+    const payload = {
+      laneId,
+      title
+    };
+    return {
+      type: "RENAME_LANE",
+      payload
+    }
   }
 };
 
