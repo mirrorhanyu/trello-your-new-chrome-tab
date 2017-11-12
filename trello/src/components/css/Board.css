@@ -1,10 +1,16 @@
 .board {
-  overflow-y: auto;
+  overflow-x: scroll;
+  white-space: nowrap;
 }
 
 .board-header {
+  position: fixed;
   background: rgba(0,0,0,.15);
+  width: 100%;
   height: 40px;
   margin-bottom: 8px;
 }
 
+.board-container {
+  padding-top: 54px;
+}

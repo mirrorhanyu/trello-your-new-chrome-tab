@@ -11,6 +11,7 @@
 
 .card-content {
     word-wrap: break-word;
+    white-space: normal;
 }
 
 .card.dragging {
