@@ -37,8 +37,9 @@
 .lane-cards {
     padding: 0 4px;
     margin: 0 4px;
-    max-height: calc(100vh - 135px);
-    overflow-y: scroll;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .placeholder {

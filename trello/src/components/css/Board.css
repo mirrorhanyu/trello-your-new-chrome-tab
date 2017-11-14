@@ -1,5 +1,6 @@
 .board {
-  overflow-x: scroll;
+  height: 100vh;
+  overflow-x: auto;
   white-space: nowrap;
 }
 
