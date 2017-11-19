@@ -31,6 +31,13 @@ class BoardContainer extends Component {
     this.props.addLane(this.state.noise);
     this.setState({noise: ""});
   }
+
+  enterConfirm(event) {
+    if(event.keyCode === 13 && event.shiftKey === false) {
+      event.preventDefault();
+      this.addLane();
+    }
+  }
   
   render() {
     const lanesQuantity = this.props.lanesQuantity;
@@ -38,7 +45,7 @@ class BoardContainer extends Component {
     
     const laneGenerator = this.state.isMouthOpen ? (
       <div className="lane-generator-content">
-        <input autoFocus={true} className="lane-name-getter" type="text" placeholder="Add a lane..." value={this.state.noise} onChange={this.makeNoise.bind(this)}/>
+        <input autoFocus={true} className="lane-name-getter" type="text" placeholder="Add a lane..." value={this.state.noise} onChange={this.makeNoise.bind(this)} onKeyDown={this.enterConfirm.bind(this)}/>
         <input className="input-saver" type="button" value="Save" onClick={this.addLane.bind(this)}/>
         <i className="input-cancel" onClick={this.shutUp.bind(this)}>&times;</i>
       </div>

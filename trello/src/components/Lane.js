@@ -27,7 +27,14 @@ class Lane extends Component {
   speak() {
     this.setState({isMouthOpen: true});
   }
-  
+
+  enterConfirm(laneId, event) {
+    if(event.keyCode === 13 && event.shiftKey === false) {
+      event.preventDefault();
+      this.addCard(laneId);
+    }
+  }
+
   addCard(laneId) {
     this.props.addCard(laneId, this.state.noise);
     this.setState({noise: ""});
@@ -62,7 +69,7 @@ class Lane extends Component {
 
     const laneFooter = isMouthOpen ? (
       <div className="lane-input">
-        <textarea className="lane-input-content" value={this.state.noise} onChange={this.makeNoise.bind(this)}/>
+        <textarea autoFocus={true} className="lane-input-content" value={this.state.noise} onChange={this.makeNoise.bind(this)} onKeyDown={this.enterConfirm.bind(this, laneId)} />
         <input className="input-saver" type="button" value="Add" onClick={this.addCard.bind(this, laneId)} />
         <i className="input-cancel" onClick={this.shutUp.bind(this)}>&times;</i>
       </div>
