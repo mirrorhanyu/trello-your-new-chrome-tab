@@ -55,6 +55,16 @@ const actions = {
       type: "RENAME_LANE",
       payload
     }
+  },
+  removeCard: (laneId, cardIndex) => {
+    const payload = {
+      laneId,
+      cardIndex
+    };
+    return {
+      type: "REMOVE_CARD",
+      payload
+    }
   }
 };
 

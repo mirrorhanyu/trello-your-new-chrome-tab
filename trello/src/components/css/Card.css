@@ -22,3 +22,14 @@
 .card-content.dragging {
     opacity: 0;
 }
+
+.card-remover {
+    float: right;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+}
+
+.hovered {
+    background-color: #edeff0;
+}

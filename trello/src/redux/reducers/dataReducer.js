@@ -23,6 +23,10 @@ const move = (lanes, fromLaneId, toLaneId, fromCardIndex, toCardIndex) => {
   lanes[toLaneId].cards.splice(toCardIndex, 0, movedCards[0]);
 };
 
+const remove = (lanes, laneId, cardIndex) => {
+  lanes[laneId].cards.splice(cardIndex, 1);
+};
+
 function dataReducer(state = {
   lanes: []
 }, action) {
@@ -80,6 +84,15 @@ function dataReducer(state = {
       lanes[laneId].title = title;
       storeLanes(lanes);
       return {...state, lanes};
+    }
+    case "REMOVE_CARD": {
+      const payload = action.payload;
+      const laneId = payload.laneId;
+      const cardIndex = payload.cardIndex;
+      let lanes = state.lanes.slice();
+      remove(lanes, laneId, cardIndex);
+      storeLanes(lanes);
+      return {...state, lanes}
     }
     default:
       return state;

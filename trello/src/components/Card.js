@@ -10,17 +10,40 @@ import {DRAG_TYPE, DROP_TYPE} from "../contants/Type";
 
 class Card extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {isCardFoucsed: false};
+  }
+
+  focus() {
+    this.setState({isCardFoucsed: true});
+  }
+
+  leave() {
+    this.setState({isCardFoucsed: false});
+  }
+
+  removeCard(laneId, cardIndex) {
+    this.props.removeCard(laneId, cardIndex);
+  }
+
   render() {
     const cardData = this.props.cardData;
+    const cardIndex = this.props.cardIndex;
+    const laneId = this.props.laneId;
     
     const {isDragging, connectDragSource, connectDropTarget} = this.props;
+
+    const isCardFoucsed = this.state.isCardFoucsed;
     
-    const cardClassName = isDragging ? "card dragging" : "card";
+    const cardClassName = isDragging ? "card dragging" : isCardFoucsed ? "card hovered" : "card";
+    const cardRemoverClassName = isCardFoucsed ? "card-remover" : "card-remover invisible";
     const cardContentClassName = isDragging ? "card-content dragging" : "card-content";
 
     return connectDragSource(
       connectDropTarget(
-        <div className={cardClassName}>
+        <div className={cardClassName} onMouseEnter={this.focus.bind(this)} onMouseLeave={this.leave.bind(this)}>
+          <div className={cardRemoverClassName} onClick={this.removeCard.bind(this, laneId, cardIndex)}>&times;</div>
           <div className={cardContentClassName}>
             {cardData.content}
           </div>
@@ -102,7 +125,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateCards: (laneId, dragIndex, hoverIndex) => dispatch(actions.updateCards(laneId, dragIndex, hoverIndex))
+    updateCards: (laneId, dragIndex, hoverIndex) => dispatch(actions.updateCards(laneId, dragIndex, hoverIndex)),
+    removeCard: (laneId, cardIndex) => dispatch(actions.removeCard(laneId, cardIndex))
   };
 }
 
