@@ -12,15 +12,20 @@ const storeLanes = (lanes) => {
   set(settings.LOCAL_STORAGE_KEY, JSON.stringify(lanes));
 };
 
-const update = (cards, dragIndex, dropIndex) => {
+const updateCard = (cards, dragIndex, dropIndex) => {
   let card = cards[dragIndex];
   cards.splice(dragIndex, 1);
   cards.splice(dropIndex, 0, card);
 };
 
-const move = (lanes, fromLaneId, toLaneId, fromCardIndex, toCardIndex) => {
+const moveCard = (lanes, fromLaneId, toLaneId, fromCardIndex, toCardIndex) => {
   const movedCards = lanes[fromLaneId].cards.splice(fromCardIndex, 1);
   lanes[toLaneId].cards.splice(toCardIndex, 0, movedCards[0]);
+};
+
+const moveLane = (lanes, fromLaneId, toLaneId) => {
+  const movedLanes = lanes.splice(fromLaneId, 1);
+  lanes.splice(toLaneId, 0, movedLanes[0]);
 };
 
 const remove = (lanes, laneId, cardIndex) => {
@@ -61,7 +66,7 @@ function dataReducer(state = {
       const dragIndex = payload.dragIndex;
       const hoverIndex = payload.hoverIndex;
       let lanes = state.lanes.slice();
-      update(lanes[laneId].cards, dragIndex, hoverIndex);
+      updateCard(lanes[laneId].cards, dragIndex, hoverIndex);
       storeLanes(lanes);
       return {...state, lanes}
     }
@@ -72,7 +77,16 @@ function dataReducer(state = {
       const fromCardIndex = payload.fromCardIndex;
       const toCardIndex = payload.toCardIndex;
       let lanes = state.lanes.slice();
-      move(lanes, fromLaneId, toLaneId, fromCardIndex, toCardIndex);
+      moveCard(lanes, fromLaneId, toLaneId, fromCardIndex, toCardIndex);
+      storeLanes(lanes);
+      return {...state, lanes}
+    }
+    case "MOVE_LANE": {
+      const payload = action.payload;
+      const fromLaneId = payload.fromLaneId;
+      const toLaneId = payload.toLaneId;
+      let lanes = state.lanes.slice();
+      moveLane(lanes, fromLaneId, toLaneId);
       storeLanes(lanes);
       return {...state, lanes}
     }

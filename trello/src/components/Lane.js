@@ -4,9 +4,10 @@ import {findDOMNode} from 'react-dom';
 import actions from '../redux/actions/dataAction';
 import Card from "./Card";
 import './css/Lane.css';
+import {flow} from "lodash";
 
-import { DropTarget } from 'react-dnd';
-import { DROP_TYPE } from "../contants/Type";
+import { DropTarget, DragSource } from 'react-dnd';
+import { DROP_CARD_TYPE, DROP_LANE_TYPE, DRAG_LANE_TYPE } from "../contants/Type";
 
 class Lane extends Component {
 
@@ -41,7 +42,9 @@ class Lane extends Component {
   }
 
   renameLane(laneId){
-    this.props.renameLane(laneId, this.refs.title.textContent);
+    if(this.refs.title.textContent !== this.props.lanes[laneId].title){
+      this.props.renameLane(laneId, this.refs.title.textContent);
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -51,7 +54,7 @@ class Lane extends Component {
   }
 
   render() {
-    const { connectDropTarget } = this.props;
+    const { connectDropTarget, connectDragSource } = this.props;
     
     const isMouthOpen = this.state.isMouthOpen;
     
@@ -84,17 +87,19 @@ class Lane extends Component {
       };
       cards.splice(this.state.placeholderIndex, 0, (<div key="placeholder" className="placeholder" style={placeholderStyle}></div>));
     }
-
-    return connectDropTarget(
-      <div className="lane">
-        <div className="lane-title">
-          {laneTitle}
+    
+    return connectDragSource(
+      connectDropTarget(
+        <div className="lane">
+          <div className="lane-title">
+            {laneTitle}
+          </div>
+          <div className="lane-cards" ref="cards">
+            {cards}
+          </div>
+          {laneFooter}
         </div>
-        <div className="lane-cards" ref="cards">
-          {cards}
-        </div>
-        {laneFooter}
-      </div>
+      )
     );
   }
 }
@@ -102,41 +107,70 @@ class Lane extends Component {
 const cardTarget = {
   hover(props, monitor, component) {
     const item = monitor.getItem();
-    const placeholderHeight = item.cardHeight;
-    const cardLaneId = item.laneId;
-    const laneId = props.laneId;
-    if(cardLaneId === laneId){
-      return
+    if(item.dragType === DROP_CARD_TYPE){
+      const placeholderHeight = item.cardHeight;
+      const cardLaneId = item.laneId;
+      const laneId = props.laneId;
+      if(cardLaneId === laneId){
+        return
+      }
+
+      const clientOffset = monitor.getClientOffset();
+
+      const cards = component.refs.cards.getElementsByClassName("card");
+
+      const hoverCardIndex = Array.prototype.findIndex.call(cards, (card) => {
+        const cardBoundingRect = card.getBoundingClientRect();
+        return cardBoundingRect.top + cardBoundingRect.height / 2 >= clientOffset.y;
+      });
+
+      const placeholderIndex = (hoverCardIndex === -1) ? cards.length : hoverCardIndex;
+
+      component.setState({placeholderIndex, placeholderHeight});
     }
+    if(item.dragType === DROP_LANE_TYPE){
+      const hoveredLaneId = props.laneId;
+      const draggedLaneId = item.laneId;
+      
+      if(draggedLaneId === hoveredLaneId) return;
+      
+      // Determine rectangle on screen
+      const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+      
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset();
+      
+      // Dragging rightwards
+      if (draggedLaneId < hoveredLaneId && clientOffset.x < hoverBoundingRect.left) {
+        return
+      }
 
-    const clientOffset = monitor.getClientOffset();
-    
-    const cards = component.refs.cards.getElementsByClassName("card");
+      // Dragging leftwards
+      if (draggedLaneId > hoveredLaneId && clientOffset.x > hoverBoundingRect.right) {
+        return
+      }
 
-    const hoverCardIndex = Array.prototype.findIndex.call(cards, (card) => {
-      const cardBoundingRect = card.getBoundingClientRect();
-      return cardBoundingRect.top + cardBoundingRect.height / 2 >= clientOffset.y;
-    });
-    
-    const placeholderIndex = (hoverCardIndex === -1) ? cards.length : hoverCardIndex;
-
-    component.setState({placeholderIndex, placeholderHeight});
+      props.moveLane(draggedLaneId, hoveredLaneId);
+      item.laneId = hoveredLaneId;
+    }
   },
 
   drop(props, monitor, component){
     const item = monitor.getItem();
-    const cardLaneId = item.laneId;
-    const laneId = props.laneId;
-    if(cardLaneId === laneId){
-      return
+    if(item.dragType === DROP_CARD_TYPE){
+      const cardLaneId = item.laneId;
+      const laneId = props.laneId;
+      if(cardLaneId === laneId){
+        return
+      }
+      const fromLaneId = item.laneId;
+      const toLaneId = props.laneId;
+      const fromCardIndex = item.cardIndex;
+      const toCardIndex = component.state.placeholderIndex;
+      props.moveCard(fromLaneId, toLaneId, fromCardIndex, toCardIndex);
+      const placeholderIndex = -1;
+      component.setState({placeholderIndex});
     }
-    const fromLaneId = item.laneId;
-    const toLaneId = props.laneId;
-    const fromCardIndex = item.cardIndex;
-    const toCardIndex = component.state.placeholderIndex;
-    props.moveCard(fromLaneId, toLaneId, fromCardIndex, toCardIndex);
-    const placeholderIndex = -1;
-    component.setState({placeholderIndex});
   }
 };
 
@@ -146,6 +180,19 @@ function collect(connect, monitor) {
     isOver: monitor.isOver()
   };
 }
+
+const laneSource = {
+  beginDrag(props, monitor, component) {
+    return {
+      dragType: DRAG_LANE_TYPE,
+      laneId: props.laneId,
+    }
+  },
+
+  isDragging(props, monitor){
+    return monitor.getItem().laneId ===  props.laneId
+  }
+};
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -158,8 +205,18 @@ function mapDispatchToProps(dispatch) {
   return {
     addCard: (laneId, card) => dispatch(actions.addCard(laneId, card)),
     moveCard: (fromLaneId, toLaneId, fromCardIndex, toCardIndex) => dispatch(actions.moveCard(fromLaneId, toLaneId, fromCardIndex, toCardIndex)),
-    renameLane: (laneId, title) => dispatch(actions.renameLane(laneId, title))
+    renameLane: (laneId, title) => dispatch(actions.renameLane(laneId, title)),
+    moveLane: (fromLaneId, toLaneId) => dispatch(actions.moveLane(fromLaneId, toLaneId))
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DropTarget(DROP_TYPE, cardTarget, collect)(Lane));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  flow(
+    DropTarget([DROP_CARD_TYPE, DROP_LANE_TYPE], cardTarget, collect),
+    DragSource(DRAG_LANE_TYPE, laneSource, (connect, monitor) => ({
+      connectDragSource: connect.dragSource(),
+      isDragging: monitor.isDragging()
+    }))
+  )
+  (Lane)
+);

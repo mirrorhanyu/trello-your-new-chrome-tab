@@ -46,6 +46,16 @@ const actions = {
       payload
     }
   },
+  moveLane: (fromLaneId, toLaneId) => {
+    const payload = {
+      fromLaneId, 
+      toLaneId
+    };
+    return {
+      type: "MOVE_LANE",
+      payload
+    }
+  },
   renameLane: (laneId, title) => {
     const payload = {
       laneId,

@@ -10,6 +10,7 @@
 .lane-title {
     padding: 8px 10px;
     min-height: 18px;
+    width: 185px;
 }
 
 .lane-title-content {

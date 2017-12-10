@@ -6,7 +6,7 @@ import {findDOMNode} from 'react-dom';
 import {flow} from "lodash";
 
 import {DragSource, DropTarget} from 'react-dnd';
-import {DRAG_TYPE, DROP_TYPE} from "../contants/Type";
+import {DRAG_CARD_TYPE, DROP_CARD_TYPE} from "../contants/Type";
 
 class Card extends Component {
 
@@ -101,7 +101,7 @@ const cardSource = {
   beginDrag(props, monitor, component) {
     const cardHeight = findDOMNode(component).getBoundingClientRect().height;
     return {
-      dragType: DRAG_TYPE,
+      dragType: DRAG_CARD_TYPE,
       laneId: props.laneId,
       cardIndex: props.cardIndex,
       cardData: props.cardData,
@@ -133,10 +133,10 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)
 (
   flow(
-    DropTarget(DROP_TYPE, cardTarget, connect => ({
+    DropTarget(DROP_CARD_TYPE, cardTarget, connect => ({
       connectDropTarget: connect.dropTarget()
     })),
-    DragSource(DRAG_TYPE, cardSource, (connect, monitor) => ({
+    DragSource(DRAG_CARD_TYPE, cardSource, (connect, monitor) => ({
       connectDragSource: connect.dragSource(), isDragging: monitor.isDragging()
     }))
   )
