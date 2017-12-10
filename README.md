@@ -18,7 +18,7 @@ $ npm run build-dev
 + choose `publish` directory in local repo
 
 ## To do list
-- [ ] Draggable lane
+- [x] Draggable lane
 - [ ] Editable card
 - [ ] Progressable card
 - [ ] Customize backgroud
