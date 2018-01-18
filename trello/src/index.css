@@ -1,3 +1,5 @@
+@import "../node_modules/font-awesome/css/font-awesome.min.css";
+
 body {
     margin: 0;
     padding: 0;
@@ -9,7 +11,25 @@ input {
     color: #333;
     line-height: 18px;
     font-weight: 400;
-    font: 14px "Helvetica Neue", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+textarea {
+    font-size: 14px;
+    overflow: hidden;
+    word-wrap: break-word;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    outline: none;
+    transition: none;
+    background: transparent;
+    resize: none;
+}
+
+textarea:focus {
+    border: 1px solid #0079BF;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 0 #0284C6;
 }
 
 .input-cancel {
@@ -30,7 +50,6 @@ input {
     background: #5AAC44;
     box-shadow: 0 1px 0 #519839;
     color: #fff;
-    float: left;
     height: 30px;
     margin-top: 4px;
     padding: 4px 16px;
@@ -38,6 +57,15 @@ input {
     border-radius: 3px;
     font-weight: bold;
     cursor: pointer;
+}
+
+.input-saver:hover {
+    background: #519839 100%;
+}
+
+.input-saver:focus {
+    background: #49852e 100%;
+    outline: none;
 }
 
 .invisible {
@@ -54,12 +82,8 @@ input {
     border-radius: 8px;
 }
 
-::-webkit-scrollbar-track:vertical {
+::-webkit-scrollbar-track:vertical, ::-webkit-scrollbar-track:horizontal {
     background-color: #d6dadc;
-}
-
-::-webkit-scrollbar-track:horizontal {
-    background-color: rgba(0, 0, 0, .15)
 }
 
 ::-webkit-scrollbar-thumb {

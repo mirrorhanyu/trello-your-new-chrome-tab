@@ -217,6 +217,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       connectDragSource: connect.dragSource(),
       isDragging: monitor.isDragging()
     }))
-  )
-  (Lane)
+  )(Lane)
 );

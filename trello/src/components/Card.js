@@ -27,6 +27,10 @@ class Card extends Component {
     this.props.removeCard(laneId, cardIndex);
   }
 
+  editCard(laneId, cardIndex){
+    this.props.editCard(laneId, cardIndex);
+  }
+
   render() {
     const cardData = this.props.cardData;
     const cardIndex = this.props.cardIndex;
@@ -42,10 +46,10 @@ class Card extends Component {
 
     return connectDragSource(
       connectDropTarget(
-        <div className={cardClassName} onMouseEnter={this.focus.bind(this)} onMouseLeave={this.leave.bind(this)}>
+        <div className={cardClassName} onClick={this.editCard.bind(this, laneId, cardIndex)} onMouseEnter={this.focus.bind(this)} onMouseLeave={this.leave.bind(this)}>
           <div className={cardRemoverClassName} onClick={this.removeCard.bind(this, laneId, cardIndex)}>&times;</div>
           <div className={cardContentClassName}>
-            {cardData.content}
+            <div>{cardData.content}</div>
           </div>
         </div>
       )
@@ -126,12 +130,12 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     updateCards: (laneId, dragIndex, hoverIndex) => dispatch(actions.updateCards(laneId, dragIndex, hoverIndex)),
-    removeCard: (laneId, cardIndex) => dispatch(actions.removeCard(laneId, cardIndex))
+    removeCard: (laneId, cardIndex) => dispatch(actions.removeCard(laneId, cardIndex)),
+    editCard: (laneId, cardIndex) => dispatch(actions.editCard(laneId, cardIndex))
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)
-(
+export default connect(mapStateToProps, mapDispatchToProps)(
   flow(
     DropTarget(DROP_CARD_TYPE, cardTarget, connect => ({
       connectDropTarget: connect.dropTarget()
@@ -139,6 +143,5 @@ export default connect(mapStateToProps, mapDispatchToProps)
     DragSource(DRAG_CARD_TYPE, cardSource, (connect, monitor) => ({
       connectDragSource: connect.dragSource(), isDragging: monitor.isDragging()
     }))
-  )
-  (Card)
+  )(Card)
 );

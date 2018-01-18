@@ -1,0 +1,227 @@
+.card-overlay {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    overflow-y: scroll;
+}
+
+.card-overlay-content {
+    width: 756px;
+    min-height: 600px;
+    border-radius: 3px;
+    background: rgba(226, 228, 230, 1);
+    margin: 58px auto;
+    padding-bottom: 25px;
+}
+
+.card-overlay-cancel {
+    float: right;
+    margin: 6px 9px;
+}
+
+.card-detail-title-icon {
+    color: #999;
+    font-size: 1.6em;
+    margin: 16px 0 0 16px;
+    float: left;
+}
+
+.card-detail-title-input {
+    margin: 11px 11px 0;
+    min-height: 24px;
+    padding: 2px;
+    font-weight: 700;
+    width: 650px;
+    line-height: 24px;
+    font-size: 20px;
+}
+
+.card-detail-description, .card-detail-comments {
+    margin: 0 35px;
+    width: 500px;
+    padding: 7px;
+}
+
+.card-detail-description-entry {
+    padding: 8px 10px;
+}
+
+.card-detail-description-entry:hover {
+    background-color: #d6dadc;
+    cursor: pointer;
+}
+
+.card-detail-description-icon {
+    color: #999;
+    font-size: 1.1em;
+}
+
+.card-detail-description-hint {
+    margin-left: 8px;
+    color: #999;
+}
+
+.card-detail-description-edit {
+    padding: 8px 10px;
+}
+
+.card-detail-description-input {
+    margin-top: 0;
+    width: 492px;
+    padding: 7px;
+    font-size: 14px;
+    max-height: 85px;
+}
+
+.card-detail-description-input:focus {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0 1px 6px rgba(0, 0, 0, .1);
+    box-sizing: border-box;
+    transition: background 85ms ease-in, border-color 85ms ease-in;
+    background: rgba(0, 0, 0, .03);
+}
+
+.card-detail-description-show {
+    margin: 1px 0 0 35px;
+}
+
+.card-detail-description-show span {
+    color: #999;
+    font-style: italic;
+    word-wrap: break-word;
+    line-height: 1.4em;
+    white-space: pre-line;
+}
+
+.card-detail-comments-icon {
+    color: #999;
+    font-size: 1.3em;
+    padding: 0 10px;
+}
+
+.card-detail-comments-hint {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.card-detail-comments-input {
+    padding-left: 35px;
+}
+
+.card-detail-comments-area, .card-detail-comment-show {
+    background-color: #fff;
+    padding: 9px 11px;
+    border: 0;
+    border-radius: 3px;
+    line-height: 18px;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: solid 2px #c8c9ca;
+    border-right: solid 1px #c8c9ca;
+    transition: background 85ms ease-in, border-color 85ms ease-in;
+}
+
+.card-detail-comments-area:focus {
+    border: 0;
+    border-bottom: solid 2px #c8c9ca;
+    border-right: solid 1px #c8c9ca;
+    box-shadow: none;
+}
+
+.card-detail-comments-save {
+    margin-top: 3px;
+    margin-bottom: 22px;
+}
+
+.card-detail-comment {
+    padding-left: 35px;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.card-detail-comment-show {
+    word-break: break-all;
+    white-space: normal;
+    margin-bottom: 8px;
+    outline: none;
+    width: fit-content;
+    position: relative;
+    white-space: pre-line;
+}
+
+.card-detail-comment-show:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-right-color: #fff;
+    border-left: 0;
+    margin-top: -6px;
+    margin-left: -6px;
+}
+
+.card-detail-comment-info {
+    margin: 0;
+    font-size: 12px;
+    color: #999;
+}
+
+.card-detail-comment-delete {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.card-detail-comment-delete:hover {
+    color: #4d4d4d;
+}
+
+
+.card-detail-comment-cut-off {
+    margin-top: 10px;
+    border-bottom: solid 1px #999;
+    opacity: 0.5;
+    width: 99%;
+}
+
+.card-detail-sidebar {
+    float: right;
+    width: 168px;
+    padding: 8px 24px;
+}
+
+.card-detail-sidebar-hint {
+    margin-bottom: 0;
+}
+
+.card-detail-sidebar-label, .card-detail-sidebar-to-do-list {
+    background-color: #d8dadc;
+    color: #4c4c4c;
+    border-radius: 3px;
+    border-bottom: solid 1px rgba(68, 68, 68, 0.1);
+    box-shadow: 0 1px 0 0 #c4c9cc;
+    font-weight: 700;
+    cursor: pointer;
+    display: block;
+    height: 18px;
+    margin-top: 8px;
+    max-width: 300px;
+    overflow: hidden;
+    padding: 8px 14px 7px 14px;
+}
+
+.card-detail-sidebar-label:hover, .card-detail-sidebar-to-do-list:hover {
+    background-color: #c9ced0;
+}
+
+.card-detail-sidebar-icon {
+    color: #999;
+    margin-right: 10px;
+}
+

@@ -75,6 +75,30 @@ const actions = {
       type: "REMOVE_CARD",
       payload
     }
+  },
+  editCard: (laneId, cardIndex) => {
+    const payload = {
+      laneId,
+      cardIndex
+    };
+    return {
+      type: "EDIT_CARD",
+      payload
+    }
+  },
+  cancelEditingCard: () => {
+    return {
+      type: "CANCEL_EDITING_CARD"
+    }
+  },
+  saveCardDetail: (laneId, cardIndex, title, description, comments) => {
+    const payload = {
+      laneId, cardIndex, title, description, comments
+    };
+    return {
+      type: "SAVE_CARD_DETAIL",
+      payload
+    };
   }
 };
 

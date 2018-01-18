@@ -18,6 +18,15 @@ const updateCard = (cards, dragIndex, dropIndex) => {
   cards.splice(dropIndex, 0, card);
 };
 
+const editCard = (lanes, laneId, cardIndex, content, description, comments) => {
+  lanes[laneId].cards.splice(cardIndex, 1, {
+    content,
+    description,
+    comments
+  });
+  return lanes;
+};
+
 const moveCard = (lanes, fromLaneId, toLaneId, fromCardIndex, toCardIndex) => {
   const movedCards = lanes[fromLaneId].cards.splice(fromCardIndex, 1);
   lanes[toLaneId].cards.splice(toCardIndex, 0, movedCards[0]);
@@ -33,7 +42,10 @@ const remove = (lanes, laneId, cardIndex) => {
 };
 
 function dataReducer(state = {
-  lanes: []
+  lanes: [],
+  isEditingCard: false,
+  editingLaneId: 0,
+  editingCardIndex: 0
 }, action) {
   switch (action.type) {
     case "INIT_TRELLO_BOARD" :
@@ -47,8 +59,10 @@ function dataReducer(state = {
       const payload = action.payload;
       const id = payload.laneId;
       const content = payload.card;
+      const description = "";
+      const comments = [];
       const lanes = state.lanes.slice();
-      lanes[id].cards.push({content});
+      lanes[id].cards.push({content, description, comments});
       storeLanes(lanes);
       return {...state, lanes};
     }
@@ -105,6 +119,29 @@ function dataReducer(state = {
       const cardIndex = payload.cardIndex;
       let lanes = state.lanes.slice();
       remove(lanes, laneId, cardIndex);
+      storeLanes(lanes);
+      return {...state, lanes}
+    }
+    case "EDIT_CARD": {
+      const payload = action.payload;
+      const isEditingCard = true;
+      const editingLaneId = payload.laneId;
+      const editingCardIndex = payload.cardIndex;
+      return {...state, isEditingCard, editingLaneId, editingCardIndex}
+    }
+    case "CANCEL_EDITING_CARD": {
+      const isEditingCard = false;
+      return {...state, isEditingCard}
+    }
+    case "SAVE_CARD_DETAIL": {
+      const payload = action.payload;
+      const laneId = payload.laneId;
+      const cardIndex = payload.cardIndex;
+      const title = payload.title;
+      const description = payload.description;
+      const comments = payload.comments;
+      let lanes = state.lanes.slice();
+      editCard(lanes, laneId, cardIndex, title, description, comments);
       storeLanes(lanes);
       return {...state, lanes}
     }
